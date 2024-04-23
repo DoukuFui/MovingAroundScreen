@@ -1,58 +1,61 @@
+var direction = 0;
+const img = document.getElementById("hero");
+const obj = new Object(img);
 
-function Hero(image, top, left, size){
-    this.image = image;
-    this.top = top;
-    this.left = left;
-    this.size = size;
+function Object(imageElement){
+    this.imageElement = imageElement;
+    this.left = parseInt(imageElement.style.left);
+    this.top = parseInt(imageElement.style.top);
+    this.size = imageElement.offsetHeight;
 
-    this.getHeroElement = function(){
-        return '<img width="'+ this.size + '"' +
-            ' height="'+ this.size + '"' +
-            ' src="' + this.image +'"' +
-            ' style="top: '+this.top+'px; left:'+this.left+'px;position:absolute;" />';
+    this.getSize = function () {
+        return this.size;
     }
 
+    console.log(this.size);
     this.moveRight = function(){
         this.left += 50;
+        this.imageElement.style.left = this.left + "px";
     }
 
     this.moveLeft = function(){
         this.left -= 50;
+        this.imageElement.style.left = this.left + "px";
     }
 
     this.moveBottom = function(){
         this.top += 50;
+        this.imageElement.style.top = this.top + "px";
     }
 
     this.moveTop = function(){
         this.top -= 50;
+        this.imageElement.style.top = this.top + "px";
     }
 }
 
-var hero = new Hero('pikachu.png', 0, 0, 200);
-var direction = 0;
-
-function movingObject(){
-    switch (direction){
+function freeMoving(){
+    console.log(obj.left);
+    console.log(window.innerWidth - obj.getSize());
+    switch (direction) {
         case 0:
-            if(hero.left < window.innerWidth - hero.size-20) hero.moveRight();
+            if (obj.left < window.innerWidth - obj.getSize() - 20) obj.moveRight();
             else direction = 1;
             break;
         case 1:
-            if(hero.top < window.innerHeight - hero.size-20) hero.moveBottom();
+            if (obj.top < window.innerHeight - obj.getSize() - 20) obj.moveBottom();
             else direction = 2;
             break;
         case 2:
-            if(hero.left > 0) hero.moveLeft();
+            if (obj.left > 0) obj.moveLeft();
             else direction = 3;
             break;
         default:
-            if(hero.top > 0) hero.moveTop();
+            if (obj.top > 0) obj.moveTop();
             else direction = 0;
             break;
     }
-    document.getElementById('game').innerHTML = hero.getHeroElement();
-    setTimeout(movingObject, 100)
+    setTimeout(freeMoving, 200);
 }
 
-movingObject();
+freeMoving();
